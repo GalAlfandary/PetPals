@@ -4,9 +4,12 @@ import com.example.petpals.Models.Pet;
 import com.example.petpals.Models.PetList;
 import com.example.petpals.Models.VetVisit;
 import com.example.petpals.Models.WalkingDay;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class DataGenerator {
 
@@ -17,8 +20,9 @@ public class DataGenerator {
         petList.setName("My Pets")
                 .addPet(
                         new Pet()
-                                .setName("Simba")
-                                .setDob("2020-03-02")
+                                .setId(generateUniqueId())  // Set unique ID
+                                .setName("Coco")
+                                .setDob("2015-05-01")
                                 .setSex(Pet.Sex.MALE)
                                 .setVetVisits(new ArrayList<>(Arrays.asList(
                                         new VetVisit().setVisitDate("2023-03-02").setVisitTime("19:00"),
@@ -33,11 +37,12 @@ public class DataGenerator {
                                         "08:00",
                                         "18:00"
                                 )))
-                                .setImageUri("https://www.vidavetcare.com/wp-content/uploads/sites/234/2022/04/golden-retriever-dog-breed-info.jpeg")
+                                .setImageUri("https://firebasestorage.googleapis.com/v0/b/pet-pals-100e1.appspot.com/o/pets_images%2Fcoco.jpeg?alt=media&token=6349e768-6e8a-4bab-94ef-e1b5aef71d36")
                 ).addPet(
                         new Pet()
+                                .setId(generateUniqueId())  // Set unique ID
                                 .setName("Belle")
-                                .setDob("2021-04-10")
+                                .setDob("2022-05-10")
                                 .setSex(Pet.Sex.FEMALE)
                                 .setVetVisits(new ArrayList<>(Arrays.asList(
                                         new VetVisit().setVisitDate("2023-04-10").setVisitTime("10:30")
@@ -50,12 +55,13 @@ public class DataGenerator {
                                         "07:30",
                                         "17:30"
                                 )))
-                                .setImageUri("https://news.harvard.edu/wp-content/uploads/2014/10/hello-kitty-wallpaper-37_605.jpg")
+                                .setImageUri("https://firebasestorage.googleapis.com/v0/b/pet-pals-100e1.appspot.com/o/pets_images%2Fbelle.jpeg?alt=media&token=cb5d4a02-2ea9-40d3-89c0-805f0a900634")
                 ).addPet(
                         new Pet()
-                                .setName("Max")
-                                .setDob("2019-05-15")
-                                .setSex(Pet.Sex.MALE)
+                                .setId(generateUniqueId())  // Set unique ID
+                                .setName("Mamusha")
+                                .setDob("2010-05-15")
+                                .setSex(Pet.Sex.FEMALE)
                                 .setVetVisits(new ArrayList<>(Arrays.asList(
                                         new VetVisit().setVisitDate("2023-05-15").setVisitTime("11:00")
                                 )))
@@ -67,11 +73,12 @@ public class DataGenerator {
                                         "06:30",
                                         "17:00"
                                 )))
-                                .setImageUri("https://static.wikia.nocookie.net/dog-stories/images/8/84/Max_the_secret_life_of_pets.png/revision/latest?cb=20160612214816")
+                                .setImageUri("https://firebasestorage.googleapis.com/v0/b/pet-pals-100e1.appspot.com/o/pets_images%2Fmamusha.jpeg?alt=media&token=448348c0-3881-4af2-ae50-08db9f47d470")
                 ).addPet(
                         new Pet()
-                                .setName("Luna")
-                                .setDob("2021-02-20")
+                                .setId(generateUniqueId())  // Set unique ID
+                                .setName("Yoko")
+                                .setDob("2019-09-01")
                                 .setSex(Pet.Sex.FEMALE)
                                 .setVetVisits(new ArrayList<>(Arrays.asList(
                                         new VetVisit().setVisitDate("2023-02-20").setVisitTime("09:45")
@@ -84,11 +91,12 @@ public class DataGenerator {
                                         "08:15",
                                         "18:45"
                                 )))
-                                .setImageUri("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgIYFJzZER35zycVwgCkqEIG35LH15h--B1g&s")
+                                .setImageUri("https://firebasestorage.googleapis.com/v0/b/pet-pals-100e1.appspot.com/o/pets_images%2Fyoko.jpeg?alt=media&token=36026efe-63c6-4e30-b1f2-a3f043b37b1a")
                 ).addPet(
                         new Pet()
-                                .setName("Charlie")
-                                .setDob("2018-03-18")
+                                .setId(generateUniqueId())  // Set unique ID
+                                .setName("Timon")
+                                .setDob("2022-04-18")
                                 .setSex(Pet.Sex.MALE)
                                 .setVetVisits(new ArrayList<>(Arrays.asList(
                                         new VetVisit().setVisitDate("2023-03-18").setVisitTime("16:00")
@@ -101,9 +109,16 @@ public class DataGenerator {
                                         "07:00",
                                         "19:00"
                                 )))
-                                .setImageUri("https://m.media-amazon.com/images/I/61RDVpQrIJL._AC_UF1000,1000_QL80_.jpg")
+                                .setImageUri("https://firebasestorage.googleapis.com/v0/b/pet-pals-100e1.appspot.com/o/pets_images%2Ftimon.jpeg?alt=media&token=3763de90-2b25-4355-b975-0cd9fef2237a")
                 );
 
         return petList;
     }
+
+    // Generate unique IDs for each pet
+    private static String generateUniqueId() {
+        return UUID.randomUUID().toString();
+    }
+
+
 }

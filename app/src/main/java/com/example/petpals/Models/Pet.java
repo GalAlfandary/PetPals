@@ -13,6 +13,7 @@ public class Pet {
         MALE, FEMALE
     }
 
+    private String id;
     private String name;
     private String dob;
     private Sex sex;
@@ -22,6 +23,15 @@ public class Pet {
     private ArrayList<String> walkingTimes = null;
 
     public Pet() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Pet setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public String getName() {

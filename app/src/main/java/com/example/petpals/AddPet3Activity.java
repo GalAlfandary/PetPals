@@ -135,7 +135,6 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
         Pet.Sex sex = Pet.Sex.valueOf(sexString.toUpperCase());
         String imageUri = bundle.getString("imageUri");
         ArrayList<VetVisit> vetVisits = bundle.getParcelableArrayList("vetVisits");
-
         Pet newPet = new Pet();
         newPet.setName(name)
                 .setDob(dob)
@@ -144,6 +143,8 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
                 .setVetVisits(vetVisits)
                 .setWalkingDays(walkingDays)
                 .setWalkingTimes(walkingTimes);
+        Log.d("pet:",newPet.toString());
+
         uploadPetImageAndSaveData(newPet.getImageUri(),newPet);
     }
 
@@ -152,6 +153,7 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
             Uri imageUri = Uri.parse(imageUriString);
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
+            //Log.d("pet id ",newPet.getId());
             StorageReference petImageRef = storageRef.child("pets_images/" + newPet.getName() + ".jpg");
             UploadTask uploadTask = petImageRef.putFile(imageUri);
             uploadTask.addOnSuccessListener(taskSnapshot -> {
@@ -173,26 +175,20 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
 
     private void savePetToDatabase(Pet newPet) {
         DatabaseReference petsRef = FirebaseDatabase.getInstance().getReference("Pets/pets");
-        petsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                long childrenCount = snapshot.getChildrenCount(); // Get the count of existing pets
-                petsRef.child(String.valueOf(childrenCount)).setValue(newPet)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                SignalManager.getInstance().toast("Pet added successfully!");
-                                moveToMainActivity();
-                            } else {
-                                SignalManager.getInstance().toast("Failed to add pet.");
-                            }
-                        });
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                //pass
-            }
-        });
+        String petId = petsRef.push().getKey(); // Generate unique ID
+        newPet.setId(petId); // Set the ID in the Pet object
+
+        petsRef.child(petId).setValue(newPet)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        SignalManager.getInstance().toast("Pet added successfully!");
+                        moveToMainActivity();
+                    } else {
+                        SignalManager.getInstance().toast("Failed to add pet.");
+                    }
+                });
     }
+
 
     private void moveToMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
