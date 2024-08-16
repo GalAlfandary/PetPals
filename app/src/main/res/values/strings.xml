@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Pet Pals</string>
+    <string name="dd_mm_yyyy">DD-MM-YYYY</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="choose_pet_sex">Choose Pet Sex</string>
+    <string name="pet_type">Pet Type</string>
+    <string name="choose_pet_type">Choose Pet Type</string>
+    <string name="pet_name">Pet Name</string>
+    <string name="enter_pet_name">Enter Pet Name</string>
+    <string name="pet_sex">Pet Sex</string>
+    <string name="pet_image">Pet Image</string>
+    <string name="add_a_new_pet">Add A new Pet</string>
+    <string name="upcoming_vet_visits">Upcoming vet visits</string>
+    <string name="walking_days">Walking days</string>
+</resources>

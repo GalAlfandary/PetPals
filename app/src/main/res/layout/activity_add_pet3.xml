@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_bg"
+    tools:context=".AddPet3Activity">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/add_pet_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="@dimen/def_margin"
+        android:layout_marginTop="@dimen/def_margin"
+        android:layout_marginBottom="@dimen/def_margin"
+        android:text="@string/add_a_new_pet"
+        android:textColor="@color/blue_grey_800"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/walking_days_lbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/add_pet_title"
+            android:layout_marginStart="@dimen/def_margin"
+            android:layout_marginTop="@dimen/def_margin"
+            android:layout_marginBottom="8dp"
+            android:text="@string/walking_days"
+            android:textColor="@color/blue_grey_800"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+
+    <LinearLayout
+        android:id="@+id/walking_days"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginHorizontal="@dimen/def_margin"
+        android:orientation="horizontal"
+        android:layout_below="@id/walking_days_lbl">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/sunday"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/s_init" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/monday"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/m_init" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/tuesday"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/t_init" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/wednesday"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/w_init" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/thursday"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/t_init" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/friday"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/f_init" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/saturday"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/s_init" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/walking_hours_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/def_margin"
+        android:orientation="horizontal"
+        android:layout_below="@id/walking_days"
+        >
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/walking_times_lbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Walking hours"
+            android:textColor="@color/blue_grey_800"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            />
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/add_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/turquoise"
+            android:textColor="@color/white"
+            app:icon="@drawable/plus_svgrepo_com"
+            app:iconTint="@color/white"
+            android:text="Add walking time"
+            android:textSize="18sp"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
+            android:layout_marginRight="16dp"
+            android:scaleY="0.7"
+            android:scaleX="0.7"/>
+
+
+    </LinearLayout>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/walking_LST"
+        android:layout_below="@id/walking_hours_section"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/walking_times_item"
+        android:layout_above="@id/walking_btns">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+    <LinearLayout
+        android:id="@+id/walking_btns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/st_walk_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vet_LST"
+            android:backgroundTint="@color/turquoise"
+            android:padding="16dp"
+            android:text="Set Walk time and countinue"
+            android:enabled="false"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="@dimen/def_margin"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/later_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/grey_def"
+            android:padding="16dp"
+            android:text="Maybe Later"
+            android:textColor="@color/blue_grey_800"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="@dimen/def_margin"
+            />
+
+    </LinearLayout>
+</RelativeLayout>

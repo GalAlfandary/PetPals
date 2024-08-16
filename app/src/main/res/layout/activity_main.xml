@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_bg"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/greeting_sign_out"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/greeting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="16dp"
+            android:text="Good Morning!"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="start"
+            />
+
+
+        <ImageButton
+            android:id="@+id/add_pet_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/plus_icon"
+            android:backgroundTint="@color/grey_bg"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+/>
+
+    </LinearLayout>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_LST_pets"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp"
+        android:layout_below="@id/greeting_sign_out"
+        android:layout_centerInParent="true"
+        tools:listitem="@layout/pet_item" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@color/grey_bg">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/home_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:backgroundTint="@color/grey_bg"
+            android:elevation="0dp"
+            app:icon="@drawable/home"
+            app:iconTint="@color/turquoise"
+            android:padding="0dp"
+            android:text="Home"
+            android:textColor="@color/black"
+            app:iconGravity="textTop"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/walks_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:backgroundTint="@color/grey_bg"
+            android:elevation="0dp"
+            app:icon="@drawable/paw"
+            app:iconTint="@color/grey_300"
+            android:padding="0dp"
+            android:text="Walks"
+            android:textColor="@color/grey_300"
+            app:iconGravity="textTop"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/vet_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:backgroundTint="@color/grey_bg"
+            android:elevation="0dp"
+            app:icon="@drawable/vet"
+            app:iconTint="@color/grey_300"
+            android:padding="0dp"
+            android:text="Vets"
+            android:textColor="@color/grey_300"
+            app:iconGravity="textTop"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sign_out_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:backgroundTint="@color/grey_bg"
+            android:elevation="0dp"
+            app:icon="@drawable/sign_out_svgrepo_com"
+            app:iconTint="@color/red"
+            android:padding="0dp"
+            android:text="LogOut"
+            android:textColor="@color/red"
+            app:iconGravity="textTop"
+            />
+    </LinearLayout>
+
+</RelativeLayout>
