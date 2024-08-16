@@ -77,4 +77,10 @@ dependencies {
 
     //popup dialogs
     implementation ("com.saadahmedev.popup-dialog:popup-dialog:2.0.0")
+
+    // WorkManager dependency
+    implementation ("androidx.work:work-runtime-ktx:2.7.1")
+
+    // Firebase Cloud Messaging dependency
+    implementation ("com.google.firebase:firebase-messaging")
 }

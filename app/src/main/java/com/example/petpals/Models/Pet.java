@@ -17,6 +17,7 @@ public class Pet {
     private String name;
     private String dob;
     private Sex sex;
+    private int age;
     private String imageUri;
     private ArrayList<VetVisit> vetVisits = null;
     private ArrayList<WalkingDay> walkingDays = null;
