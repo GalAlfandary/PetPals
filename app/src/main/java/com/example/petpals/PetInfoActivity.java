@@ -49,7 +49,6 @@ public class PetInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pet_info);
         findViews();
 
-        // Retrieve the petId from the intent
         String petId = getIntent().getStringExtra("petId");
         if (petId != null) {
             loadPetFromDatabase(petId);

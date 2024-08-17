@@ -13,14 +13,13 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        SharePreferencesManagerV3.init(this);
         SignalManager.init(this);
-//        PeriodicWorkRequest notificationWork = new PeriodicWorkRequest.Builder(NotificationWorker.class, 1, TimeUnit.HOURS)
-//                .build();
-//        WorkManager.getInstance(this).enqueue(notificationWork);
+        PeriodicWorkRequest notificationWork = new PeriodicWorkRequest.Builder(NotificationWorker.class, 1, TimeUnit.HOURS)
+                .build();
+        WorkManager.getInstance(this).enqueue(notificationWork);
 
-        //test the notifications:
-        WorkManager.getInstance(this).enqueue(new OneTimeWorkRequest.Builder(NotificationWorker.class).build());
+        //test the notifications without time context:
+//        WorkManager.getInstance(this).enqueue(new OneTimeWorkRequest.Builder(NotificationWorker.class).build());
 
     }
 }

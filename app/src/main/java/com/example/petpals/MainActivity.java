@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton sign_out_btn;
     private ImageButton add_pet_btn;
     private RecyclerView main_LST_pets;
-    private ArrayList<Pet> petList;  // Store the pets list
-    private ArrayList<String> petIds;  // Store the petIds list
+    private ArrayList<Pet> petList;
+    private ArrayList<String> petIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     Pet pet = petSnapshot.getValue(Pet.class);
                     if (pet != null) {
                         petList.add(pet);
-                        petIds.add(pet.getId()); // Add the petId to the list
+                        petIds.add(pet.getId());
                     }
                 }
                 if (!petList.isEmpty()) {
@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("db", "PetList is null or empty after fetching data from Firebase.");
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("db", "Database error: " + error.getMessage());

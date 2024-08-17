@@ -47,9 +47,7 @@ public class AddPet2Activity extends AppCompatActivity implements ItemClickListe
     }
 
     private void initViews() {
-        add_visit_btn.setOnClickListener(v -> {
-            showDateTimeDialog(null,-1);
-        });
+        add_visit_btn.setOnClickListener(v -> showDateTimeDialog(null,-1));
 
         st_health_button.setOnClickListener(v -> {
             Intent intent = new Intent(this, AddPet3Activity.class);
@@ -81,7 +79,6 @@ public class AddPet2Activity extends AppCompatActivity implements ItemClickListe
         final Calendar calendar = Calendar.getInstance();
 
         if (vetVisit != null) {
-            // Parse and set the existing date and time
             try {
                 SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.getDefault());

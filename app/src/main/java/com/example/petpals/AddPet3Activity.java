@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,12 +21,8 @@ import com.example.petpals.Utilities.SignalManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -37,7 +31,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 public class AddPet3Activity extends AppCompatActivity implements WalkingTimesListener {
@@ -87,10 +80,7 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
     private void initViews() {
         initDays();
         add_hour.setOnClickListener(v -> showTimePickerDialog(null, -1));
-        st_walk_button.setOnClickListener(v -> {
-            saveWalkingData();
-
-        });
+        st_walk_button.setOnClickListener(v -> saveWalkingData());
         updateSetWalkingButtonState();
     }
 
@@ -153,19 +143,12 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
             Uri imageUri = Uri.parse(imageUriString);
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
-            //Log.d("pet id ",newPet.getId());
             StorageReference petImageRef = storageRef.child("pets_images/" + newPet.getName() + ".jpg");
             UploadTask uploadTask = petImageRef.putFile(imageUri);
-            uploadTask.addOnSuccessListener(taskSnapshot -> {
-                petImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    newPet.setImageUri(uri.toString());
-                    savePetToDatabase(newPet);
-                }).addOnFailureListener(e -> {
-                    SignalManager.getInstance().toast("Failed to get download URL");
-                });
-            }).addOnFailureListener(e -> {
-                SignalManager.getInstance().toast("Failed to upload image");
-            });
+            uploadTask.addOnSuccessListener(taskSnapshot -> petImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                newPet.setImageUri(uri.toString());
+                savePetToDatabase(newPet);
+            }).addOnFailureListener(e -> SignalManager.getInstance().toast("Failed to get download URL"))).addOnFailureListener(e -> SignalManager.getInstance().toast("Failed to upload image"));
         } else {
             newPet.setImageUri(DEFAULT_IMAGE_URI);
             savePetToDatabase(newPet);
@@ -175,9 +158,9 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
 
     private void savePetToDatabase(Pet newPet) {
         DatabaseReference petsRef = FirebaseDatabase.getInstance().getReference("Pets/pets");
-        String petId = petsRef.push().getKey(); // Generate unique ID
-        newPet.setId(petId); // Set the ID in the Pet object
-
+        String petId = petsRef.push().getKey();
+        newPet.setId(petId);
+        assert petId != null;
         petsRef.child(petId).setValue(newPet)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

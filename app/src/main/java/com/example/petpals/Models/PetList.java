@@ -9,7 +9,6 @@ public class PetList {
     private ArrayList<Pet> pets;
 
 
-
     public PetList() {
         this.pets = new ArrayList<>();
     }
@@ -31,7 +30,7 @@ public class PetList {
         this.pets = pets;
     }
 
-    public PetList addPet(Pet pet){
+    public PetList addPet(Pet pet) {
         this.pets.add(pet);
         return this;
     }

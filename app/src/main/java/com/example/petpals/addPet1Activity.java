@@ -5,25 +5,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Spinner;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
@@ -61,28 +53,21 @@ public class addPet1Activity extends AppCompatActivity {
 
         adapterGender = new ArrayAdapter<>(this, R.layout.list_item, gender);
         auto_complete_pet_sex.setAdapter(adapterGender);
-        auto_complete_pet_sex.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedSex = parent.getItemAtPosition(position).toString();
-            }
+        auto_complete_pet_sex.setOnItemClickListener((parent, view, position, id) -> {
+            selectedSex = parent.getItemAtPosition(position).toString();
+            updateContinueButtonState();
         });
-        date_picker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MaterialDatePicker<Long> materialDatePicker = MaterialDatePicker.Builder.datePicker()
-                        .setTitleText("Select Date")
-                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                        .build();
-                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-                    @Override
-                    public void onPositiveButtonClick(Long selection) {
-                        selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(selection));
-                        date.setText(selectedDate);
-                    }
-                });
-                materialDatePicker.show(getSupportFragmentManager(), "tag");
-            }
+        date_picker.setOnClickListener(v -> {
+            MaterialDatePicker<Long> materialDatePicker = MaterialDatePicker.Builder.datePicker()
+                    .setTitleText("Select Date")
+                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                    .build();
+            materialDatePicker.addOnPositiveButtonClickListener(selection -> {
+                selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(selection));
+                date.setText(selectedDate);
+                updateContinueButtonState();
+            });
+            materialDatePicker.show(getSupportFragmentManager(), "tag");
         });
         continue_button.setOnClickListener(v -> {
             String petName = Objects.requireNonNull(pet_name.getText()).toString().trim();
@@ -97,12 +82,10 @@ public class addPet1Activity extends AppCompatActivity {
             intent.putExtras(bundle);
             startActivity(intent);
         });
-        upload_pet_img.setOnClickListener(v -> {
-            ImagePicker.with(this)
-                    .crop(1f, 1f)                    //Crop image(Optional), Check Customization for more option
-                    .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
-                    .start();
-        });
+        upload_pet_img.setOnClickListener(v -> ImagePicker.with(this)
+                .crop(1f, 1f)
+                .maxResultSize(1080, 1080)
+                .start());
     }
 
     private void findViews() {
@@ -119,17 +102,21 @@ public class addPet1Activity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             selectedImgUri = data.getData();
             pet_img.setImageURI(selectedImgUri);
             updateContinueButtonState();
-        } else
-            Log.d("upload", "error uploading");
+        } else {
+            Log.d("upload", "Error uploading image or operation canceled");
+        }
     }
 
+
     private void updateContinueButtonState() {
-        String petName = pet_name.getText().toString().trim();
-        boolean isFormValid = !petName.isEmpty() && selectedSex != null && selectedDate != null ;
+        String petName = Objects.requireNonNull(pet_name.getText()).toString().trim();
+        boolean isFormValid = !petName.isEmpty() && selectedSex != null && selectedDate != null;
+        Log.d("FormState", "Name: " + petName + ", Sex: " + selectedSex + ", Date: " + selectedDate + ", Image: " + selectedImgUri.toString());
         continue_button.setEnabled(isFormValid);
     }
+
 }

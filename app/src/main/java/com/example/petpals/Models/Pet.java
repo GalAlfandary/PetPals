@@ -4,9 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Pet {
     public enum Sex {
@@ -17,7 +15,6 @@ public class Pet {
     private String name;
     private String dob;
     private Sex sex;
-    private int age;
     private String imageUri;
     private ArrayList<VetVisit> vetVisits = null;
     private ArrayList<WalkingDay> walkingDays = null;

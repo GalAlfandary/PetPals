@@ -20,12 +20,12 @@ import java.util.ArrayList;
 public class PetAdapter extends RecyclerView.Adapter<PetAdapter.PetViewHolder> {
 
     private final ArrayList<Pet> pets;
-    private final ArrayList<String> petIds;  // Add a list to hold petIds
+    private final ArrayList<String> petIds;
     private final Callback_ListItemClicked callbackListItemClicked;
 
     public PetAdapter(ArrayList<Pet> pets, ArrayList<String> petIds, Callback_ListItemClicked callbackListItemClicked) {
         this.pets = pets;
-        this.petIds = petIds;  // Initialize the petIds list
+        this.petIds = petIds;
         this.callbackListItemClicked = callbackListItemClicked;
     }
 
@@ -52,7 +52,7 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.PetViewHolder> {
 
         holder.itemView.setOnClickListener(v -> {
             if (callbackListItemClicked != null) {
-                String petId = petIds.get(position);  // Get the petId from the list based on position
+                String petId = petIds.get(position);
                 callbackListItemClicked.onListItemClicked(position, petId);
             }
         });
@@ -64,7 +64,6 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.PetViewHolder> {
     }
 
     public static class PetViewHolder extends RecyclerView.ViewHolder {
-
         MaterialTextView petName, petAge, petSex;
         ImageView petImage;
 
