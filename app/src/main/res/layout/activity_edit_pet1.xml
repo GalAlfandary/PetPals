@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_bg"
-    tools:context=".AddPet1Activity">
+    tools:context=".EditPet1Activity">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/add_pet_title"
@@ -15,7 +15,7 @@
         android:layout_marginStart="@dimen/def_margin"
         android:layout_marginTop="@dimen/def_margin"
         android:layout_marginBottom="@dimen/def_margin"
-        android:text="@string/add_a_new_pet"
+        android:text="@string/edit_pet"
         android:textColor="@color/blue_grey_800"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -162,17 +162,27 @@
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/continue_button"
+        android:id="@+id/save_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/pet_info_section"
         android:backgroundTint="@color/turquoise"
         android:padding="16dp"
-        android:text="Continue"
+        android:text="Save"
         android:enabled="false"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:layout_marginHorizontal="@dimen/def_margin"
-        />
+        android:layout_marginHorizontal="@dimen/def_margin" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/discard_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/save_button"
+        android:backgroundTint="@color/grey_def"
+        android:padding="16dp"
+        android:text="Discard"
+        android:textColor="@color/blue_grey_800"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="@dimen/def_margin" />
 
 </RelativeLayout>

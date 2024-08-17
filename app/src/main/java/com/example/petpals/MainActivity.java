@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         petAdapter = new PetAdapter(petList, petIds, new Callback_ListItemClicked() {
             @Override
             public void onListItemClicked(int position, String petId) {
-                Log.d("selected pet",petId.toString());
+                Log.d("selected pet", petId);
                 Intent intent = new Intent(MainActivity.this, PetInfoActivity.class);
                 intent.putExtra("petId", petId);
                 startActivity(intent);
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if (!petList.isEmpty()) {
-                    Log.d("db", "Fetched pet list: " + petList.toString());
+                    Log.d("db", "Fetched pet list: " + petList);
                     initViews(petList, petIds);
                 } else {
                     Log.d("db", "PetList is null or empty after fetching data from Firebase.");
@@ -94,13 +94,13 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("db", "Database error: " + error.getMessage());
+                //pass
             }
         });
     }
 
     private void transactToAdd() {
-        Intent intent = new Intent(MainActivity.this, addPet1Activity.class);
+        Intent intent = new Intent(MainActivity.this, AddPet1Activity.class);
         startActivity(intent);
     }
 

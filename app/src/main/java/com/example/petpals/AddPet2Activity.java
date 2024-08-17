@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,13 +22,11 @@ import java.util.Locale;
 
 public class AddPet2Activity extends AppCompatActivity implements ItemClickListener {
 
-    private MaterialButton add_visit_btn;
-    private RecyclerView vet_LST;
-    private MaterialButton st_health_button, later_button;
+    private MaterialButton addVisitButton, startHealthButton, laterButton;
+    private RecyclerView vetListRecyclerView;
     private ArrayList<VetVisit> vetVisits = new ArrayList<>();
     private Bundle bundle;
     private VetVisitAdapter vetVisitAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,98 +34,109 @@ public class AddPet2Activity extends AppCompatActivity implements ItemClickListe
         setContentView(R.layout.activity_add_pet2);
         bundle = getIntent().getExtras();
         findViews();
-        initRecyclerView();
-        initViews();
+        setupRecyclerView();
+        setOnClickListeners();
     }
 
     private void findViews() {
-        add_visit_btn = findViewById(R.id.add_visit_btn);
-        vet_LST = findViewById(R.id.vet_LST);
-        st_health_button = findViewById(R.id.st_health_button);
-        later_button = findViewById(R.id.later_button);
+        addVisitButton = findViewById(R.id.add_visit_btn);
+        vetListRecyclerView = findViewById(R.id.vet_LST);
+        startHealthButton = findViewById(R.id.st_health_button);
+        laterButton = findViewById(R.id.later_button);
     }
 
-    private void initViews() {
-        add_visit_btn.setOnClickListener(v -> showDateTimeDialog(null,-1));
+    private void setupRecyclerView() {
+        vetVisitAdapter = new VetVisitAdapter(vetVisits, this);
+        vetListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        vetListRecyclerView.setAdapter(vetVisitAdapter);
+    }
 
-        st_health_button.setOnClickListener(v -> {
-            Intent intent = new Intent(this, AddPet3Activity.class);
+    private void setOnClickListeners() {
+        addVisitButton.setOnClickListener(v -> showDateTimeDialog(null, -1));
+
+        startHealthButton.setOnClickListener(v -> navigateToAddPet3Activity(true));
+        laterButton.setOnClickListener(v -> navigateToAddPet3Activity(false));
+
+        updateStartHealthButtonState();
+    }
+
+    private void updateStartHealthButtonState() {
+        startHealthButton.setEnabled(!vetVisits.isEmpty());
+    }
+
+    private void navigateToAddPet3Activity(boolean includeVetVisits) {
+        Intent intent = new Intent(this, AddPet3Activity.class);
+        if (includeVetVisits) {
             bundle.putParcelableArrayList("vetVisits", vetVisits);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        });
-
-        later_button.setOnClickListener(v -> {
-            Intent intent = new Intent(this, AddPet3Activity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        });
-        updateSetHealthButtonState();
-
+        }
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
-    private void updateSetHealthButtonState() {
-        st_health_button.setEnabled(!vetVisits.isEmpty());
-    }
-
-    private void initRecyclerView() {
-        vetVisitAdapter = new VetVisitAdapter(vetVisits,this);
-        vet_LST.setLayoutManager(new LinearLayoutManager(this));
-        vet_LST.setAdapter(vetVisitAdapter);
-    }
-
-    private void showDateTimeDialog(final VetVisit vetVisit, final int position) {
+    private void showDateTimeDialog(@Nullable VetVisit vetVisit, int position) {
         final Calendar calendar = Calendar.getInstance();
 
         if (vetVisit != null) {
-            try {
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
-                calendar.setTime(dateFormatter.parse(vetVisit.getVisitDate()));
-                Calendar timeCal = Calendar.getInstance();
-                timeCal.setTime(timeFormatter.parse(vetVisit.getVisitTime()));
-                calendar.set(Calendar.HOUR_OF_DAY, timeCal.get(Calendar.HOUR_OF_DAY));
-                calendar.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            parseDateTimeToCalendar(vetVisit, calendar);
         }
+        showDatePickerDialog(calendar, vetVisit, position);
+    }
 
-        DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
+    private void parseDateTimeToCalendar(VetVisit vetVisit, Calendar calendar) {
+        try {
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+            calendar.setTime(dateFormatter.parse(vetVisit.getVisitDate()));
+            Calendar timeCal = Calendar.getInstance();
+            timeCal.setTime(timeFormatter.parse(vetVisit.getVisitTime()));
+            calendar.set(Calendar.HOUR_OF_DAY, timeCal.get(Calendar.HOUR_OF_DAY));
+            calendar.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showDatePickerDialog(Calendar calendar, @Nullable VetVisit vetVisit, int position) {
+        new DatePickerDialog(AddPet2Activity.this, (view, year, month, dayOfMonth) -> {
             calendar.set(Calendar.YEAR, year);
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            TimePickerDialog.OnTimeSetListener timeSetListener = (view1, hourOfDay, minute) -> {
-                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                calendar.set(Calendar.MINUTE, minute);
+            showTimePickerDialog(calendar, vetVisit, position);
 
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
 
-                String formattedDate = dateFormatter.format(calendar.getTime());
-                String formattedTime = timeFormatter.format(calendar.getTime());
+    private void showTimePickerDialog(Calendar calendar, @Nullable VetVisit vetVisit, int position) {
+        new TimePickerDialog(AddPet2Activity.this, (view, hourOfDay, minute) -> {
+            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            calendar.set(Calendar.MINUTE, minute);
 
-                if (vetVisit == null) { //add visit
-                    VetVisit newVisit = new VetVisit();
-                    newVisit.setVisitDate(formattedDate);
-                    newVisit.setVisitTime(formattedTime);
-                    vetVisits.add(newVisit);
-                } else { //edit visit
-                    vetVisit.setVisitDate(formattedDate);
-                    vetVisit.setVisitTime(formattedTime);
-                    vetVisits.set(position, vetVisit);
-                }
+            addOrUpdateVetVisit(calendar, vetVisit, position);
 
-                vetVisitAdapter.notifyDataSetChanged();
-                updateSetHealthButtonState();
-            };
+        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
+    }
 
-            new TimePickerDialog(AddPet2Activity.this, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
-        };
+    private void addOrUpdateVetVisit(Calendar calendar, @Nullable VetVisit vetVisit, int position) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-        new DatePickerDialog(AddPet2Activity.this, dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+        String formattedDate = dateFormatter.format(calendar.getTime());
+        String formattedTime = timeFormatter.format(calendar.getTime());
+
+        if (vetVisit == null) { // Add new visit
+            VetVisit newVisit = new VetVisit();
+            newVisit.setVisitDate(formattedDate);
+            newVisit.setVisitTime(formattedTime);
+            vetVisits.add(newVisit);
+        } else { // Update existing visit
+            vetVisit.setVisitDate(formattedDate);
+            vetVisit.setVisitTime(formattedTime);
+            vetVisits.set(position, vetVisit);
+        }
+        vetVisitAdapter.notifyDataSetChanged();
+        updateStartHealthButtonState();
     }
 
     @Override
@@ -138,6 +148,6 @@ public class AddPet2Activity extends AppCompatActivity implements ItemClickListe
     public void onDeleteButtonClick(int position, VetVisit vetVisit) {
         vetVisits.remove(position);
         vetVisitAdapter.notifyItemRemoved(position);
-        updateSetHealthButtonState();
+        updateStartHealthButtonState();
     }
-};
+}

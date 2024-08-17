@@ -1,6 +1,6 @@
 package com.example.petpals;
 
-import static com.example.petpals.addPet1Activity.DEFAULT_IMAGE_URI;
+import static com.example.petpals.AddPet1Activity.DEFAULT_IMAGE_URI;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -80,8 +81,23 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
     private void initViews() {
         initDays();
         add_hour.setOnClickListener(v -> showTimePickerDialog(null, -1));
-        st_walk_button.setOnClickListener(v -> saveWalkingData());
+        st_walk_button.setOnClickListener(v -> savePetWithWalkingData());
+        later_button.setOnClickListener(v -> savePetWithoutWalkingData());
         updateSetWalkingButtonState();
+    }
+
+    private void savePetWithWalkingData() {
+        checkSelectedDays();
+        checkSelectedTimes();
+        Log.d("walking days", walkingDays.toString());
+
+        savePetToDatabase();
+    }
+
+    private void savePetWithoutWalkingData() {
+        walkingDays.clear();
+        walkingTimes.clear();
+        savePetToDatabase();
     }
 
     private void updateSetWalkingButtonState() {
@@ -113,11 +129,24 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
         selectedDaysMap.put("Saturday", false);
     }
 
-    private void saveWalkingData() {
-        checkSelectedDays();
-        checkSelectedTimes();
-        Log.d("walking days", walkingDays.toString());
+    private void uploadPetImageAndSaveData(String imageUriString, Pet newPet) {
+        if (imageUriString != null && !imageUriString.equals(DEFAULT_IMAGE_URI)) {
+            Uri imageUri = Uri.parse(imageUriString);
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            StorageReference petImageRef = storageRef.child("pets_images/" + newPet.getName() + ".jpg");
+            UploadTask uploadTask = petImageRef.putFile(imageUri);
+            uploadTask.addOnSuccessListener(taskSnapshot -> petImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                newPet.setImageUri(uri.toString());
+                savePetDataToDatabase(newPet);
+            }).addOnFailureListener(e -> SignalManager.getInstance().toast("Failed to get download URL"))).addOnFailureListener(e -> SignalManager.getInstance().toast("Failed to upload image"));
+        } else {
+            newPet.setImageUri(DEFAULT_IMAGE_URI);
+            savePetDataToDatabase(newPet);
+        }
+    }
 
+    private void savePetToDatabase() {
         String name = bundle.getString("name");
         String dob = bundle.getString("date");
         String sexString = bundle.getString("sex");
@@ -125,6 +154,7 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
         Pet.Sex sex = Pet.Sex.valueOf(sexString.toUpperCase());
         String imageUri = bundle.getString("imageUri");
         ArrayList<VetVisit> vetVisits = bundle.getParcelableArrayList("vetVisits");
+
         Pet newPet = new Pet();
         newPet.setName(name)
                 .setDob(dob)
@@ -133,30 +163,13 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
                 .setVetVisits(vetVisits)
                 .setWalkingDays(walkingDays)
                 .setWalkingTimes(walkingTimes);
-        Log.d("pet:",newPet.toString());
 
-        uploadPetImageAndSaveData(newPet.getImageUri(),newPet);
+        Log.d("pet:", newPet.toString());
+
+        uploadPetImageAndSaveData(newPet.getImageUri(), newPet);
     }
 
-    private void uploadPetImageAndSaveData(String imageUriString, Pet newPet) {
-        if (imageUriString != null&& !imageUriString.equals(DEFAULT_IMAGE_URI)) {
-            Uri imageUri = Uri.parse(imageUriString);
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
-            StorageReference petImageRef = storageRef.child("pets_images/" + newPet.getName() + ".jpg");
-            UploadTask uploadTask = petImageRef.putFile(imageUri);
-            uploadTask.addOnSuccessListener(taskSnapshot -> petImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                newPet.setImageUri(uri.toString());
-                savePetToDatabase(newPet);
-            }).addOnFailureListener(e -> SignalManager.getInstance().toast("Failed to get download URL"))).addOnFailureListener(e -> SignalManager.getInstance().toast("Failed to upload image"));
-        } else {
-            newPet.setImageUri(DEFAULT_IMAGE_URI);
-            savePetToDatabase(newPet);
-        }
-    }
-
-
-    private void savePetToDatabase(Pet newPet) {
+    private void savePetDataToDatabase(Pet newPet) {
         DatabaseReference petsRef = FirebaseDatabase.getInstance().getReference("Pets/pets");
         String petId = petsRef.push().getKey();
         newPet.setId(petId);
@@ -182,7 +195,16 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
 
     private void checkSelectedTimes() {
         ArrayList<String> times = walkingTimeAdapter.getWalkingTimes();
-        walkingTimes.addAll(times);
+        for (String time : times) {
+            if (!isDuplicateTime(time)) {
+                walkingTimes.add(time);
+            }
+        }
+        Log.d("walking times", walkingTimes.toString());
+    }
+
+    private boolean isDuplicateTime(String time) {
+        return walkingTimes.contains(time);
     }
 
     private void checkSelectedDays() {
@@ -215,7 +237,6 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
     }
 
 
-
     private void initDaySelector(ShapeableImageView dayImageView, String day, int initDrawableResId, int selectedDrawableResId) {
         dayImageView.setOnClickListener(v -> {
             boolean isSelected = Boolean.TRUE.equals(selectedDaysMap.getOrDefault(day, false));
@@ -231,8 +252,7 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
     }
 
 
-
-    private void showTimePickerDialog(final String walkingTime, final int position) {
+    private void showTimePickerDialog(@Nullable final String walkingTime, final int position) {
         final Calendar calendar = Calendar.getInstance();
         if (walkingTime != null) {
             try {
@@ -247,16 +267,26 @@ public class AddPet3Activity extends AppCompatActivity implements WalkingTimesLi
             calendar.set(Calendar.MINUTE, minute);
             SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
             String formattedTime = timeFormatter.format(calendar.getTime());
-            if (walkingTime == null) {// Add new walking time
-                walkingTimes.add(formattedTime);
-            } else {// Update existing walking time
+
+            if (walkingTime == null) { // Add new walking time
+                if (!walkingTimes.contains(formattedTime)) {
+                    walkingTimes.add(formattedTime);
+                }
+            } else { // Update existing walking time
                 walkingTimes.set(position, formattedTime);
             }
             walkingTimeAdapter.notifyDataSetChanged();
             updateSetWalkingButtonState();
+
+            // Log the selected time here, after it's set
+            Log.d("walk time selected:", formattedTime);
         };
+
         new TimePickerDialog(AddPet3Activity.this, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
     }
+
+
+
 
 
     @Override

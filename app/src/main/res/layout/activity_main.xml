@@ -75,36 +75,36 @@
             android:textColor="@color/black"
             app:iconGravity="textTop"
             />
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/walks_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:backgroundTint="@color/grey_bg"
-            android:elevation="0dp"
-            app:icon="@drawable/paw"
-            app:iconTint="@color/grey_300"
-            android:padding="0dp"
-            android:text="Walks"
-            android:textColor="@color/grey_300"
-            app:iconGravity="textTop"
-            />
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/vet_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:backgroundTint="@color/grey_bg"
-            android:elevation="0dp"
-            app:icon="@drawable/vet"
-            app:iconTint="@color/grey_300"
-            android:padding="0dp"
-            android:text="Vets"
-            android:textColor="@color/grey_300"
-            app:iconGravity="textTop"
-            />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/walks_btn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:backgroundTint="@color/grey_bg"-->
+<!--            android:elevation="0dp"-->
+<!--            app:icon="@drawable/paw"-->
+<!--            app:iconTint="@color/grey_300"-->
+<!--            android:padding="0dp"-->
+<!--            android:text="Walks"-->
+<!--            android:textColor="@color/grey_300"-->
+<!--            app:iconGravity="textTop"-->
+<!--            />-->
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/vet_btn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:backgroundTint="@color/grey_bg"-->
+<!--            android:elevation="0dp"-->
+<!--            app:icon="@drawable/vet"-->
+<!--            app:iconTint="@color/grey_300"-->
+<!--            android:padding="0dp"-->
+<!--            android:text="Vets"-->
+<!--            android:textColor="@color/grey_300"-->
+<!--            app:iconGravity="textTop"-->
+<!--            />-->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_out_btn"
