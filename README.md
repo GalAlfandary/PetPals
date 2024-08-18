@@ -47,29 +47,16 @@ PetPals is an Android application designed to help pet owners manage and organiz
 
 <img src="https://github.com/user-attachments/assets/3d419aee-3988-4842-8e29-df75af40bd99" alt="menu" width="300">
 
+**Add pet screen**
 
+<img src="https://github.com/user-attachments/assets/b221b1fb-7183-47e3-bddb-3a0dd1cdb2ff" alt="menu" width="300">
 
-## Usage
-----------------
+**Add pet vet visits screen**
 
-1. **Adding a Pet:**
-  - Navigate to the "Add Pet" screen.
-  - Enter the pet’s details including name, date of birth, and gender.
-  - Upload a profile picture using the image picker.
-  - Save the pet profile.
+<img src="https://github.com/user-attachments/assets/e61d72b1-affb-4703-801e-e23832728a9c" alt="menu" width="300">
 
-2. **Managing Walking Schedules:**
-  - Go to the "Edit Walking Schedule" screen.
-  - Select days of the week and specific times for walks.
-  - Add multiple walking times for a single day.
-  - Save changes to update the schedule.
+**Add pet walking data screen**
 
-3. **Scheduling Vet Visits**
-  - Navigate to the "Vet Visits" section.
-  - Add a new vet visit by selecting a date and time.
-  - View, edit, or delete existing vet visits.
-
-4. **Notifications**
--   The app will send notifications for upcoming vet visits and walking times, ensuring that you never miss an important event.
+<img src="https://github.com/user-attachments/assets/69304536-7165-4d8f-8c75-c0d20ca536d3" alt="menu" width="300">
 
    
