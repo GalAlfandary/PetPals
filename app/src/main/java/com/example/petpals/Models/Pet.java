@@ -1,12 +1,17 @@
 package com.example.petpals.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 
-public class Pet {
+public class Pet implements Parcelable {
+
+    // Enum for Sex
     public enum Sex {
         MALE, FEMALE
     }
@@ -20,9 +25,54 @@ public class Pet {
     private ArrayList<WalkingDay> walkingDays = null;
     private ArrayList<String> walkingTimes = null;
 
+    // Constructor
     public Pet() {
     }
 
+    // Parcelable constructor
+    protected Pet(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        dob = in.readString();
+        sex = Sex.valueOf(in.readString()); // Reading the sex field
+        imageUri = in.readString();
+        vetVisits = in.createTypedArrayList(VetVisit.CREATOR);
+        walkingDays = in.createTypedArrayList(WalkingDay.CREATOR);
+        walkingTimes = in.createStringArrayList();
+    }
+
+    // Parcelable Creator
+    public static final Creator<Pet> CREATOR = new Creator<Pet>() {
+        @Override
+        public Pet createFromParcel(Parcel in) {
+            return new Pet(in);
+        }
+
+        @Override
+        public Pet[] newArray(int size) {
+            return new Pet[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // Writing the object’s data to a Parcel
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(dob);
+        dest.writeString(sex.name()); // Writing the sex field as a String
+        dest.writeString(imageUri);
+        dest.writeTypedList(vetVisits);
+        dest.writeTypedList(walkingDays);
+        dest.writeStringList(walkingTimes);
+    }
+
+    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -87,8 +137,6 @@ public class Pet {
     }
 
     public int getAge() {
-
-
         LocalDate birthDate = LocalDate.parse(dob);
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
@@ -106,7 +154,8 @@ public class Pet {
     @Override
     public String toString() {
         return "Pet{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", dob='" + dob + '\'' +
                 ", sex=" + sex +
                 ", imageUri='" + imageUri + '\'' +

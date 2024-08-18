@@ -42,6 +42,7 @@ public class PetInfoActivity extends AppCompatActivity {
     private RecyclerView walking_hours, vet_times;
     private MaterialButton edit_general_btn, edit_walking_btn, edit_vet_btn, delete_pet;
     private LinearLayout week_days_sec;
+    private String petId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +50,13 @@ public class PetInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pet_info);
         findViews();
 
-        String petId = getIntent().getStringExtra("petId");
-        if (petId != null) {
-            loadPetFromDatabase(petId);
-        } else {
-            Log.e("PetInfoActivity", "No petId provided in the intent");
-            finish();
-        }
+        petId = getIntent().getStringExtra("petId");
+//        if (petId != null) {
+//            loadPetFromDatabase(petId);
+//        } else {
+//            Log.e("PetInfoActivity", "No petId provided in the intent");
+//            finish();
+//        }
     }
 
     private void findViews() {
@@ -117,7 +118,15 @@ public class PetInfoActivity extends AppCompatActivity {
 
         setupWalkingHoursView();
         delete_pet.setOnClickListener(v -> deletePet());
+        edit_general_btn.setOnClickListener(v -> editGeneralInfo());
     }
+
+    private void editGeneralInfo() {
+        Intent intent = new Intent(PetInfoActivity.this, EditPet1Activity.class);
+        intent.putExtra("pet", pet);
+        startActivity(intent);
+    }
+
 
     private void deletePet() {
         PopupDialog.getInstance(this)
@@ -225,5 +234,11 @@ public class PetInfoActivity extends AppCompatActivity {
             }
             return true;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadPetFromDatabase(petId);
     }
 }

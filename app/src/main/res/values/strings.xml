@@ -13,4 +13,13 @@
     <string name="upcoming_vet_visits">Upcoming vet visits</string>
     <string name="walking_days">Walking days</string>
     <string name="edit_pet">Edit Pet</string>
+    <string name="save">Save</string>
+    <string name="discard">Discard</string>
+    <string name="add_visit">Add Visit</string>
+    <string name="upload_a_photo">Upload a photo</string>
+    <string name="Continue">Continue</string>
+    <string name="walking_hours">Walking hours</string>
+    <string name="add_walking_time">Add walking time</string>
+    <string name="set_walk_time_and_continue">Set Walk time and continue</string>
+    <string name="maybe_later">Maybe Later</string>
 </resources>

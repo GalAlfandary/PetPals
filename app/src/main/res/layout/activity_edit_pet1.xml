@@ -59,7 +59,7 @@
             android:backgroundTint="@color/grey_def"
             android:scaleX="0.7"
             android:scaleY="0.7"
-            android:text="Upload a photo"
+            android:text="@string/upload_a_photo"
             android:textColor="@color/blue_grey_800"
             app:icon="@drawable/upload"
             app:iconTint="@color/blue_grey_800"
@@ -104,9 +104,9 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/pet_sex"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
             android:background="@color/grey_bg">
 
             <AutoCompleteTextView
@@ -114,11 +114,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/def_margin"
-                android:inputType="none"
                 android:background="@color/grey_def"
-                android:textStyle="bold"
+                android:inputType="none"
                 android:textColor="@color/blue_grey_800"
-                />
+                android:textStyle="bold" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -166,23 +165,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/pet_info_section"
+        android:layout_marginHorizontal="@dimen/def_margin"
         android:backgroundTint="@color/turquoise"
-        android:padding="16dp"
-        android:text="Save"
         android:enabled="false"
+        android:padding="16dp"
+        android:text="@string/save"
         android:textColor="@color/white"
-        android:textStyle="bold"
-        android:layout_marginHorizontal="@dimen/def_margin" />
+        android:textStyle="bold" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/discard_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/save_button"
+        android:layout_marginHorizontal="@dimen/def_margin"
         android:backgroundTint="@color/grey_def"
         android:padding="16dp"
-        android:text="Discard"
+        android:text="@string/discard"
         android:textColor="@color/blue_grey_800"
-        android:textStyle="bold"
-        android:layout_marginHorizontal="@dimen/def_margin" />
+        android:textStyle="bold" />
 
 </RelativeLayout>

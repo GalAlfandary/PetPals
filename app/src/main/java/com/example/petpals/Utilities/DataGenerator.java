@@ -36,7 +36,7 @@ public class DataGenerator {
                                         "08:00",
                                         "18:00"
                                 )))
-                                .setImageUri("https://firebasestorage.googleapis.com/v0/b/pet-pals-100e1.appspot.com/o/pets_images%2Fcoco.jpeg?alt=media&token=6349e768-6e8a-4bab-94ef-e1b5aef71d36")
+                                .setImageUri("https://firebasestorage.googleapis.com/v0/b/pet-pals-100e1.appspot.com/o/pets_images%2Fcoco.jpeg?alt=media&token=2cb6bd29-ef3e-4c5c-a4a9-2a005de758c9")
                 ).addPet(
                         new Pet()
                                 .setId(generateUniqueId())
