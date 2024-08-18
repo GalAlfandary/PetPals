@@ -1,6 +1,5 @@
 package com.example.petpals;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +33,7 @@ public class EditPet1Activity extends AppCompatActivity {
     private ArrayAdapter<String> genderAdapter;
     private MaterialButton datePickerButton;
     private MaterialTextView selectedDateText;
-    private MaterialButton saveButton;
+    private MaterialButton saveButton,discard_button;
     private ExtendedFloatingActionButton uploadImageButton;
     private AppCompatImageView petImageView;
     private Uri selectedImageUri;
@@ -61,6 +60,7 @@ public class EditPet1Activity extends AppCompatActivity {
         uploadImageButton = findViewById(R.id.upload_pet_img);
         saveButton = findViewById(R.id.save_button);
         petImageView = findViewById(R.id.pet_img);
+        discard_button = findViewById(R.id.discard_button);
     }
 
     private void initializeGenderDropdown() {
@@ -76,17 +76,13 @@ public class EditPet1Activity extends AppCompatActivity {
         if (pet != null) {
             petNameEditText.setText(pet.getName());
 
-            // Set sex if not null
             if (pet.getSex() != null) {
                 selectedSex = pet.getSex().toString();
                 petSexDropdown.setText(selectedSex, false);
             }
-
-            // Set DOB
             selectedDateText.setText(pet.getDob());
             selectedDate = pet.getDob();
 
-            // Load image using Glide
             if (pet.getImageUri() != null) {
                 selectedImageUri = Uri.parse(pet.getImageUri());
                 Glide.with(this)
@@ -115,8 +111,8 @@ public class EditPet1Activity extends AppCompatActivity {
             });
             materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER");
         });
-
         saveButton.setOnClickListener(v -> saveChanges());
+        discard_button.setOnClickListener(v->finish());
     }
 
     @Override

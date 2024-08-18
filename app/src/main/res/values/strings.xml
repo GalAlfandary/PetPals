@@ -22,4 +22,5 @@
     <string name="add_walking_time">Add walking time</string>
     <string name="set_walk_time_and_continue">Set Walk time and continue</string>
     <string name="maybe_later">Maybe Later</string>
+    <string name="set_health_settings">Set Health Settings</string>
 </resources>

@@ -84,7 +84,7 @@
             android:backgroundTint="@color/turquoise"
             android:enabled="false"
             android:padding="16dp"
-            android:text="Set Health Settings"
+            android:text="@string/set_health_settings"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
@@ -95,7 +95,7 @@
             android:layout_marginHorizontal="@dimen/def_margin"
             android:backgroundTint="@color/grey_def"
             android:padding="16dp"
-            android:text="Maybe Later"
+            android:text="@string/maybe_later"
             android:textColor="@color/blue_grey_800"
             android:textStyle="bold" />
 

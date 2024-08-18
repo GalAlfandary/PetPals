@@ -156,7 +156,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/def_margin"
             android:backgroundTint="@color/turquoise"
-            android:enabled="false"
             android:padding="16dp"
             android:text="@string/save"
             android:textColor="@color/white"

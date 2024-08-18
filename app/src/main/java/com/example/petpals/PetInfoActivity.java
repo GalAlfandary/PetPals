@@ -119,6 +119,20 @@ public class PetInfoActivity extends AppCompatActivity {
         setupWalkingHoursView();
         delete_pet.setOnClickListener(v -> deletePet());
         edit_general_btn.setOnClickListener(v -> editGeneralInfo());
+        edit_walking_btn.setOnClickListener(v-> editWalkingInfo());
+        edit_vet_btn.setOnClickListener(v-> editVetInfo());
+    }
+
+    private void editWalkingInfo() {
+        Intent intent = new Intent(PetInfoActivity.this, EditPet3Activity.class);
+        intent.putExtra("pet", pet);
+        startActivity(intent);
+    }
+
+    private void editVetInfo() {
+        Intent intent = new Intent(PetInfoActivity.this, EditPet2Activity.class);
+        intent.putExtra("pet", pet);
+        startActivity(intent);
     }
 
     private void editGeneralInfo() {
