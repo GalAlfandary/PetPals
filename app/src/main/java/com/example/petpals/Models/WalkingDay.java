@@ -1,12 +1,29 @@
 package com.example.petpals.Models;
 
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Calendar;
+
 public class WalkingDay implements Parcelable {
     public enum DayOfWeek {
-        SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+        SUNDAY(Calendar.SUNDAY),
+        MONDAY(Calendar.MONDAY),
+        TUESDAY(Calendar.TUESDAY),
+        WEDNESDAY(Calendar.WEDNESDAY),
+        THURSDAY(Calendar.THURSDAY),
+        FRIDAY(Calendar.FRIDAY),
+        SATURDAY(Calendar.SATURDAY);
+
+        private final int calendarDay;
+
+        DayOfWeek(int calendarDay) {
+            this.calendarDay = calendarDay;
+        }
+
+        public int getCalendarDay() {
+            return calendarDay;
+        }
     }
 
     private DayOfWeek day;
@@ -49,4 +66,3 @@ public class WalkingDay implements Parcelable {
         dest.writeString(day.name());
     }
 }
-

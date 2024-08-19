@@ -1,6 +1,7 @@
 package com.example.petpals;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -42,8 +43,6 @@ public class EditPet3Activity extends AppCompatActivity implements WalkingTimesL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_pet3);
-
-        // Load Pet object from intent
         pet = getIntent().getParcelableExtra("pet");
         if (pet != null) {
             walkingTimes = pet.getWalkingTimes() != null ? new ArrayList<>(pet.getWalkingTimes()) : new ArrayList<>();
@@ -88,11 +87,13 @@ public class EditPet3Activity extends AppCompatActivity implements WalkingTimesL
         pet.setWalkingDays(walkingDays);
         pet.setWalkingTimes(walkingTimes);
 
-        // Save the updated pet object back to the database
         DatabaseReference petsRef = FirebaseDatabase.getInstance().getReference("Pets/pets");
         petsRef.child(pet.getId()).setValue(pet)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        Intent intent = new Intent();
+                        intent.putExtra("updatedPet", pet);
+                        setResult(RESULT_OK, intent);
                         SignalManager.getInstance().toast("Pet edited successfully!");
                         finish();
                     } else {
@@ -100,6 +101,7 @@ public class EditPet3Activity extends AppCompatActivity implements WalkingTimesL
                     }
                 });
     }
+
 
     private void updateSetWalkingButtonState() {
         saveButton.setEnabled(!walkingDays.isEmpty() || !walkingTimes.isEmpty());

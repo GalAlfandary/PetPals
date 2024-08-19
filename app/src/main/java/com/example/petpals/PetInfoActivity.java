@@ -89,17 +89,15 @@ public class PetInfoActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 pet = snapshot.getValue(Pet.class);
                 if (pet != null) {
-                    initViews();  // Initialize views with the loaded pet data
+                    initViews();
                 } else {
-                    Log.e("PetInfoActivity", "Failed to retrieve pet data for petId: " + petId);
-                    finish();  // Close the activity if the pet is not found
+                    Log.d("PetInfoActivity", "Failed to retrieve pet data for petId: " + petId);
+                    finish();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("PetInfoActivity", "Database error: " + error.getMessage());
-                finish();  // Close the activity in case of a database error
+                //pass
             }
         });
     }
@@ -119,8 +117,8 @@ public class PetInfoActivity extends AppCompatActivity {
         setupWalkingHoursView();
         delete_pet.setOnClickListener(v -> deletePet());
         edit_general_btn.setOnClickListener(v -> editGeneralInfo());
-        edit_walking_btn.setOnClickListener(v-> editWalkingInfo());
-        edit_vet_btn.setOnClickListener(v-> editVetInfo());
+        edit_walking_btn.setOnClickListener(v -> editWalkingInfo());
+        edit_vet_btn.setOnClickListener(v -> editVetInfo());
     }
 
     private void editWalkingInfo() {
@@ -253,6 +251,8 @@ public class PetInfoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         loadPetFromDatabase(petId);
+
     }
 }
