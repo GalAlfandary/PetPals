@@ -51,12 +51,13 @@ public class PetInfoActivity extends AppCompatActivity {
         findViews();
 
         petId = getIntent().getStringExtra("petId");
-//        if (petId != null) {
-//            loadPetFromDatabase(petId);
-//        } else {
-//            Log.e("PetInfoActivity", "No petId provided in the intent");
-//            finish();
-//        }
+
+        if (petId != null) {
+            loadPetFromDatabase(petId);
+        } else {
+            Log.e("PetInfoActivity", "No petId provided in the intent");
+            finish();
+        }
     }
 
     private void findViews() {
@@ -95,9 +96,11 @@ public class PetInfoActivity extends AppCompatActivity {
                     finish();
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                //pass
+                Log.d("PetInfoActivity", "Database error: " + error.getMessage());
+                finish();
             }
         });
     }
@@ -115,10 +118,13 @@ public class PetInfoActivity extends AppCompatActivity {
                 .into(pet_info_img);
 
         setupWalkingHoursView();
+        setupVetView();
+
         delete_pet.setOnClickListener(v -> deletePet());
         edit_general_btn.setOnClickListener(v -> editGeneralInfo());
         edit_walking_btn.setOnClickListener(v -> editWalkingInfo());
         edit_vet_btn.setOnClickListener(v -> editVetInfo());
+        Log.d("pet info:", pet.toString());
     }
 
     private void editWalkingInfo() {
@@ -139,12 +145,11 @@ public class PetInfoActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     private void deletePet() {
         PopupDialog.getInstance(this)
                 .standardDialogBuilder()
                 .createAlertDialog()
-                .setHeading("Delete " + pet.getName() + "?")
+                .setHeading("Delete " + pet.getName() + "? 🥺")
                 .setDescription("Are you sure you want to delete this pet? All the details will be lost.")
                 .build(new StandardDialogActionListener() {
                     @Override
@@ -182,20 +187,35 @@ public class PetInfoActivity extends AppCompatActivity {
 
     private void setupWalkingHoursView() {
         ArrayList<String> walkingHours = pet.getWalkingTimes();
-        if (!updateWalkingDays()) {
-            setupVetView();
-        }
-        if (walkingHours == null || walkingHours.isEmpty()) {
+        ArrayList<WalkingDay> walkingDays = pet.getWalkingDays();
+
+        boolean hasWalkingHours = walkingHours != null && !walkingHours.isEmpty();
+        boolean hasWalkingDays = walkingDays != null && !walkingDays.isEmpty();
+
+        if (!hasWalkingHours && !hasWalkingDays) {
+            // No walking times and no walking days
             walking_hours.setVisibility(View.GONE);
+            week_days_sec.setVisibility(View.GONE);
+            no_walking_times.setVisibility(View.VISIBLE);
         } else {
-            walking_hours.setVisibility(View.VISIBLE);
+            if (hasWalkingHours) {
+                walking_hours.setVisibility(View.VISIBLE);
+                WalkingHoursAdapter walkingHoursAdapter = new WalkingHoursAdapter(walkingHours);
+                walking_hours.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+                walking_hours.setAdapter(walkingHoursAdapter);
+            } else {
+                walking_hours.setVisibility(View.GONE);
+            }
+            if (hasWalkingDays) {
+                week_days_sec.setVisibility(View.VISIBLE);
+                updateWalkingDaysUI(walkingDays);
+            } else {
+                week_days_sec.setVisibility(View.GONE);
+            }
             no_walking_times.setVisibility(View.GONE);
-            WalkingHoursAdapter walkingHoursAdapter = new WalkingHoursAdapter(walkingHours);
-            walking_hours.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            walking_hours.setAdapter(walkingHoursAdapter);
-            setupVetView();
         }
     }
+
 
     private void setupVetView() {
         ArrayList<VetVisit> vetVisits = pet.getVetVisits();
@@ -211,48 +231,37 @@ public class PetInfoActivity extends AppCompatActivity {
         }
     }
 
-    private boolean updateWalkingDays() {
-        ArrayList<WalkingDay> walkingDays = pet.getWalkingDays();
-        if (walkingDays == null || walkingDays.isEmpty()) {
-            week_days_sec.setVisibility(View.GONE);
-            walking_hours.setVisibility(View.GONE);
-            no_walking_times.setVisibility(View.VISIBLE);
-            return false;
-        } else {
-            for (WalkingDay day : walkingDays) {
-                switch (day.getDay()) {
-                    case SUNDAY:
-                        sunday.setImageResource(R.drawable.s_selected);
-                        break;
-                    case MONDAY:
-                        monday.setImageResource(R.drawable.m_selected);
-                        break;
-                    case TUESDAY:
-                        tuesday.setImageResource(R.drawable.t_selected);
-                        break;
-                    case WEDNESDAY:
-                        wednesday.setImageResource(R.drawable.w_selected);
-                        break;
-                    case THURSDAY:
-                        thursday.setImageResource(R.drawable.t_selected);
-                        break;
-                    case FRIDAY:
-                        friday.setImageResource(R.drawable.f_selected);
-                        break;
-                    case SATURDAY:
-                        saturday.setImageResource(R.drawable.s_selected);
-                        break;
-                }
+    private void updateWalkingDaysUI(ArrayList<WalkingDay> walkingDays) {
+        for (WalkingDay day : walkingDays) {
+            switch (day.getDay()) {
+                case SUNDAY:
+                    sunday.setImageResource(R.drawable.s_selected);
+                    break;
+                case MONDAY:
+                    monday.setImageResource(R.drawable.m_selected);
+                    break;
+                case TUESDAY:
+                    tuesday.setImageResource(R.drawable.t_selected);
+                    break;
+                case WEDNESDAY:
+                    wednesday.setImageResource(R.drawable.w_selected);
+                    break;
+                case THURSDAY:
+                    thursday.setImageResource(R.drawable.t_selected);
+                    break;
+                case FRIDAY:
+                    friday.setImageResource(R.drawable.f_selected);
+                    break;
+                case SATURDAY:
+                    saturday.setImageResource(R.drawable.s_selected);
+                    break;
             }
-            return true;
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         loadPetFromDatabase(petId);
-
     }
 }
